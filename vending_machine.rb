@@ -11,11 +11,11 @@ class SlotMoney
 
   # 入金する
   def slot_money
-    puts "e:入金を止める, 半角数字:お金を入れる"
+    puts "q:入金を止める, 半角数字:お金を入れる"
     while true 
       input = gets.chomp 
       money = input.to_i
-      return @slot_money if input == "e"  # e が入力されたら、入金処理を終了
+      return @slot_money if input == "q"  # q が入力されたら、入金処理を終了
       if MONEY.include?(money)     # 使用可能であれば、残高に加算
         @slot_money += money
       elsif input =~ /^[0-9]+$/    # 使用不可能なお金であれば、そのまま返却
@@ -46,8 +46,8 @@ class VendingMachine
   
   # 商品を並べる
   def drink_list
-    puts "購入したい商品番号を入力してください。"
-    message = ["e:お釣りを出す"]
+    puts "購入したい商品番号、またはqを入力してください。"
+    message = ["q:お釣りを出す"]
     @stock_drinks.each_with_index do | stock_drink, i |
       message << "#{i}:#{stock_drink[:drink]}:#{stock_drink[:price]}円"
     end
@@ -103,7 +103,7 @@ class VendingMachine
       input = gets.chomp  #入力受付
       puts "- - - - - - - - - -"
       choice = input.to_i
-      return refund if input == "e"     # eが入力されたら、お釣りを出して終了
+      return refund if input == "q"     # qが入力されたら、お釣りを出して終了
       if (0..drink_kinds).include?(choice) && input =~ /^[0-9]+$/ # 0〜nの半角数字が入力されたら、購入処理を実行
         drink_id = choice
         buy(drink_id)
