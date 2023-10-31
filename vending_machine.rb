@@ -21,7 +21,7 @@ class SlotMoney
       elsif input =~ /^[0-9]+$/    # 使用不可能なお金であれば、そのまま返却
         puts "#{input}円が返却されました。"
       else
-        puts "eまたは半角数字を入力してください"
+        puts "qまたは半角数字を入力してください"
       end
     end
   end
@@ -105,8 +105,7 @@ class VendingMachine
       choice = input.to_i
       return refund if input == "q"     # qが入力されたら、お釣りを出して終了
       if (0..drink_kinds).include?(choice) && input =~ /^[0-9]+$/ # 0〜nの半角数字が入力されたら、購入処理を実行
-        drink_id = choice
-        buy(drink_id)
+        buy(choice)
       else
         drink_list
       end
