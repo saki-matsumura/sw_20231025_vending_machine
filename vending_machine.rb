@@ -121,6 +121,7 @@ class VendingMachine
   end
 end
 
+# 実行用のクラス
 class VendingMachineStart
   def self.vending_machine_start
     # お金を入れる
@@ -133,4 +134,5 @@ class VendingMachineStart
   end
 end
 
+# 実行
 VendingMachineStart.vending_machine_start
