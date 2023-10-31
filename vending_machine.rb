@@ -15,9 +15,8 @@ class SlotMoney
     while true 
       input = gets.chomp 
       money = input.to_i
-      if input == "a"  # a が入力されたら、入金処理を終了
-        return @slot_money
-      elsif MONEY.include?(money)  # 使用可能であれば、残高に加算
+      return @slot_money if input == "a"  # a が入力されたら、入金処理を終了
+      if MONEY.include?(money)  # 使用可能であれば、残高に加算
         @slot_money += money
       elsif input =~ /^[0-9]+$/    # 使用不可能なお金であれば、そのまま返却
         puts "#{input}円が返却されました。"
@@ -55,7 +54,7 @@ class VendingMachine
     puts "購入したい商品番号を入力してください。"
     message = ["a:お釣りを出す"]
     current_slot_drinks.each_with_index do | slot_drink, i |
-      message << "#{i}:#{slot_drink[:drink]}:#{slot_drink[:price]}円 "
+      message << "#{i}:#{slot_drink[:drink]}:#{slot_drink[:price]}円"
     end
     puts message.join(', ')
   end
@@ -74,7 +73,7 @@ class VendingMachine
     price = @slot_drinks[drink_id][:price]
     stock = @slot_drinks[drink_id][:stock]
     
-    if stock == 0
+    if stock.zero?
       puts "#{drink}は売り切れました。 #{credit}"
       drink_list
 
@@ -96,7 +95,7 @@ class VendingMachine
       else
         drink_list
       end
-    end 
+    end
   end
 
   # 購入する商品を選ぶ
