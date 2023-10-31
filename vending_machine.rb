@@ -11,17 +11,17 @@ class SlotMoney
 
   # 入金する
   def slot_money
-    puts "a:入金を止める, 半角数字:お金を入れる"
+    puts "e:入金を止める, 半角数字:お金を入れる"
     while true 
       input = gets.chomp 
       money = input.to_i
-      return @slot_money if input == "a"  # a が入力されたら、入金処理を終了
-      if MONEY.include?(money)  # 使用可能であれば、残高に加算
+      return @slot_money if input == "e"  # e が入力されたら、入金処理を終了
+      if MONEY.include?(money)     # 使用可能であれば、残高に加算
         @slot_money += money
       elsif input =~ /^[0-9]+$/    # 使用不可能なお金であれば、そのまま返却
         puts "#{input}円が返却されました。"
       else
-        puts "aまたは半角数字を入力してください"
+        puts "eまたは半角数字を入力してください"
       end
     end
   end
@@ -34,14 +34,9 @@ class VendingMachine
     @current_slot_money = slot_money  #　残高を代入
     @sales = 0         # 売上リセット     
     default_stock = 5  # 各飲み物のストックをリセット
-    @slot_drinks = [{drink: "コーラ", price: 120, stock: default_stock},
-                    {drink: "レッドブル", price: 200, stock: default_stock},
-                    {drink: "水", price: 100, stock: default_stock}]
-  end
-
-  # 現在、自販機に残っている飲み物
-  def current_slot_drinks
-    @slot_drinks
+    @stock_drinks = [{drink: "コーラ", price: 120, stock: default_stock},
+                     {drink: "レッドブル", price: 200, stock: default_stock},
+                     {drink: "水", price: 100, stock: default_stock}]
   end
 
   # 残高表示
@@ -52,9 +47,9 @@ class VendingMachine
   # 商品を並べる
   def drink_list
     puts "購入したい商品番号を入力してください。"
-    message = ["a:お釣りを出す"]
-    current_slot_drinks.each_with_index do | slot_drink, i |
-      message << "#{i}:#{slot_drink[:drink]}:#{slot_drink[:price]}円"
+    message = ["e:お釣りを出す"]
+    @stock_drinks.each_with_index do | stock_drink, i |
+      message << "#{i}:#{stock_drink[:drink]}:#{stock_drink[:price]}円"
     end
     puts message.join(', ')
   end
@@ -69,9 +64,9 @@ class VendingMachine
 
   # 購入処理
   def buy(drink_id)
-    drink = @slot_drinks[drink_id][:drink]
-    price = @slot_drinks[drink_id][:price]
-    stock = @slot_drinks[drink_id][:stock]
+    drink = @stock_drinks[drink_id][:drink]
+    price = @stock_drinks[drink_id][:price]
+    stock = @stock_drinks[drink_id][:stock]
     
     if stock.zero?
       puts "#{drink}は売り切れました。 #{credit}"
@@ -82,9 +77,9 @@ class VendingMachine
       drink_list
 
     else
-      @current_slot_money -= price                # 残高から商品の価格を引く
-      @sales += price                             # 売上に加算
-      @slot_drinks[drink_id][:stock] = stock - 1  # 対象商品のストックを1減らす
+      @current_slot_money -= price                 # 残高から商品の価格を引く
+      @sales += price                              # 売上に加算
+      @stock_drinks[drink_id][:stock] = stock - 1  # 対象商品のストックを1減らす
 
       puts "#{drink}を購入しました。 #{credit}"
 
@@ -103,12 +98,12 @@ class VendingMachine
     puts "- - - - - - - - - -"
     drink_list
 
-    drink_kinds = (current_slot_drinks.length.to_i - 1).to_i  # 飲み物の種類
+    drink_kinds = (@stock_drinks.length.to_i - 1).to_i  # 飲み物の種類
     while true
       input = gets.chomp  #入力受付
       puts "- - - - - - - - - -"
       choice = input.to_i
-      if input == "a"     # aが入力されたら、お釣りを出して終了
+      if input == "e"     # aが入力されたら、お釣りを出して終了
         refund
         return
       elsif (0..drink_kinds).include?(choice) && input =~ /^[0-9]+$/ # 0〜nの半角数字が入力されたら、購入処理を実行
