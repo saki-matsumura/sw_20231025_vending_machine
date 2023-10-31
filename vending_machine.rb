@@ -98,15 +98,13 @@ class VendingMachine
     puts "- - - - - - - - - -"
     drink_list
 
-    drink_kinds = (@stock_drinks.length.to_i - 1).to_i  # 飲み物の種類
+    drink_kinds = @stock_drinks.length.to_i - 1  # 飲み物の種類
     while true
       input = gets.chomp  #入力受付
       puts "- - - - - - - - - -"
       choice = input.to_i
-      if input == "e"     # aが入力されたら、お釣りを出して終了
-        refund
-        return
-      elsif (0..drink_kinds).include?(choice) && input =~ /^[0-9]+$/ # 0〜nの半角数字が入力されたら、購入処理を実行
+      return refund if input == "e"     # eが入力されたら、お釣りを出して終了
+      if (0..drink_kinds).include?(choice) && input =~ /^[0-9]+$/ # 0〜nの半角数字が入力されたら、購入処理を実行
         drink_id = choice
         buy(drink_id)
       else
